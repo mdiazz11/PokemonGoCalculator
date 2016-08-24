@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en-us" ng-app="pokemonApp">
+	<head>
+		<title>Pokemon Go Calc</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta charset="UTF-8">
+		<!-- load bootstrap and fontawesome via CDN -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<!-- load angular via CDN -->
+		<!--<script src="//code.angularjs.org/1.5.0-rc.2/angular.min.js"></script>-->
+		<script src="https://code.angularjs.org/1.3.0-rc.2/angular.min.js"></script>
+		<script src="app.js"></script>
+	</head>
+	<body>
+		<header>
+			<nav class="navbar navbar-default">
+				<div class="container">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="/">Pokemon Go Calc</a>
+					</div>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<!--
+			<div class="container">
+			
+			    <div ng-view></div>
+			
+			</div>
+			
+			
+			-->
+		<div class="container">
+			<div ng-controller="resultsController">
+				<form class="form-inline">
+					<select class="form-control" ng-model="pokemon">
+					    <option disabled selected>Choose Pokemon</option>
+						<optgroup label="12 Candies">
+						    <option ng-repeat="option in candy12">{{ option }}</option>
+						</optgroup>
+						<optgroup label="25 Candies">
+							<option ng-repeat="option in candy25">{{ option }}</option>
+						</optgroup>
+						<optgroup label="50 Candies">
+							<option ng-repeat="option in candy50">{{ option }}</option>
+						</optgroup>
+						<optgroup label="100 Candies">
+						    <option ng-repeat="option in candy100">{{ option }}</option>
+						</optgroup>
+						<optgroup label="400 Candies">
+						    <option>Magikarp</option>
+                        </optgroup>
+					</select>
+					<div class="form-group">
+						<label class="sr-only" for="pokemonCount"># of Pokemon</label>
+						<input type="text" class="form-control" id="pokemonCount" placeholder="# of Pokemon" ng-model="pokemonCount"/>
+					</div>
+					<div class="form-group">
+						<label class="sr-only" for="candyCount"># of Candies</label>
+						<input type="text" class="form-control" ng-model="candyCount" id="candyCount" placeholder="# of Candies" />
+					</div>
+					<button type="submit" class="btn btn-default" ng-click="results()">+</button>
+				</form>
+				
+				<p class="bg-danger" ng-if="pokemonError===true">Please select a pokmon!</p>
+				<p class="bg-danger" ng-if="pokemonCountError===true">Invalid # of Pokemon</p>
+				<p class="bg-danger" ng-if="candyCountError===true">Invalid # of Candies</p>
+				<div class="row">
+					<div class="col-md-12" ng-repeat="item in pokemonList">
+						Pokemon: {{item.pokemon}} |
+						# of Pokemon: {{ item.pokemonCount }} |
+						# of Candies: {{ item.candyCount }} 
+						<button class="btn btn-primary" ng-click="deleteItem($index)">-</button>
+						<hr />
+					</div>
+					<button class="btn btn-primary" ng-if="pokemonList.length>0" ng-click="calculate()">Calculate!</button>    
+				</div>
+				<div class="col-md-12" ng-repeat="item in calculateList">
+					Pokemon: {{item.pokemon}} | Transfer: {{item.transferCount}} |
+					# of Evolutions: {{ item.evolutionCount }} 
+					<hr />
+				</div>
+			</div><!--results Controller-->
+		</div>
+		<!--container-->
+	</body>
+</html>
