@@ -5,17 +5,24 @@ var pokemonApp = angular.module('pokemonApp', []);
 pokemonApp.controller('resultsController', ['$scope', function($scope) {
     
     //Intializing 
-    $scope.pokemonList = [];
-    $scope.pokemon = "Choose Pokemon";
+    $scope.pokemonList = []; //list of pokemon the user has entered
+    $scope.pokemon = "Choose Pokemon";    
+    $scope.allPokemon = [
+        {name: 'Weedle', candy: 12},
+        {name: 'Caterpie', candy: 12},
+        {name: 'Pidgey', candy: 12},
+        {name: 'Pikachu', candy: 25},
+        {name: 'Rattata', candy: 25},
+        {name: 'Goldeen', candy: 25},
+        {name: 'Zubat', candy: 50},
+        {name: 'Ivysaur', candy: 100},
+        {name: 'Magikarp', candy: 400}
+    ];
     
     
-    $scope.candy12 = ['Weedle', 'Caterpie', 'Pidgey'];
-    $scope.candy25 = ['Pikachu', 'Rattata', 'Oddish']
-    $scope.candy50 = ['Goldeen', 'Zubat'];
-    $scope.candy100 = ['Ivysaur'];
     
     $scope.results = function(){
-        //reset
+        //reset errors
         $scope.pokemonError = false;
         $scope.pokemonCountError = false;
         $scope.candyCountError = false;
@@ -33,9 +40,12 @@ pokemonApp.controller('resultsController', ['$scope', function($scope) {
         
               
         //if(!($scope.pokemonError && $scope.pokemonCountError)) NOT THE SAME!!
+        
+        //Adding their pokemon 
         if(!$scope.pokemonError && !$scope.pokemonCountError && !$scope.candyCountError){
             $scope.pokemonList.push({
-                pokemon: $scope.pokemon,
+                pokemon: $scope.pokemon.name,
+                candy: $scope.pokemon.candy,
                 pokemonCount: parseInt($scope.pokemonCount),
                 candyCount: parseInt($scope.candyCount)
 
@@ -48,12 +58,7 @@ pokemonApp.controller('resultsController', ['$scope', function($scope) {
         }
         
     }
-        
-    $scope.deleteItem = function(index) {
-        $scope.pokemonList.splice(index, 1);   
-        
-        
-    }   
+          
             
      $scope.calculate = function() {
         //Reset
@@ -61,16 +66,16 @@ pokemonApp.controller('resultsController', ['$scope', function($scope) {
          $scope.transferCount = 0;
          $scope.evolutionCount = 0;
          
-         var evolutionFunc = function(candy){            
-            $scope.evolutionCount = Math.floor($scope.pokemonList[i].candyCount / candy);
+         var evolutionFunc = function(){            
+            $scope.evolutionCount = Math.floor($scope.pokemonList[i].candyCount / $scope.pokemonList[i].candy);
             
             //Eggs remaining + # of pokemon
-            var temp = ($scope.pokemonList[i].candyCount % candy) + $scope.pokemonList[i].pokemonCount;
+            var temp = ($scope.pokemonList[i].candyCount % $scope.pokemonList[i].candy) + $scope.pokemonList[i].pokemonCount;
             
-            if(temp >= candy){
+            if(temp >= $scope.pokemonList[i].candy){
                 
-                $scope.evolutionCount += Math.floor(temp / candy);
-                $scope.transferCount = $scope.pokemonList[i].pokemonCount - (temp % candy);
+                $scope.evolutionCount += Math.floor(temp / $scope.pokemonList[i].candy);
+                $scope.transferCount = $scope.pokemonList[i].pokemonCount - (temp % $scope.pokemonList[i].candy);
                 
             }
         }
@@ -78,22 +83,7 @@ pokemonApp.controller('resultsController', ['$scope', function($scope) {
                 
         for(var i = 0; i < $scope.pokemonList.length; i++)
         {
-            if($scope.candy12.indexOf($scope.pokemonList[i].pokemon) > -1)
-            {
-                evolutionFunc(12);
-                
-            } else if($scope.candy25.indexOf($scope.pokemonList[i].pokemon) > -1){
-                
-                 evolutionFunc(25);   
-            } else if($scope.candy50.indexOf($scope.pokemonList[i].pokemon) > -1){
-                
-                 evolutionFunc(50);   
-            } else if($scope.candy100.indexOf($scope.pokemonList[i].pokemon) > -1){
-                
-                evolutionFunc(100);   
-            } else {
-                evolutionFunc(400);          
-            }
+            evolutionFunc();
             
             $scope.calculateList.push({
 

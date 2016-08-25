@@ -9,7 +9,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 		<!-- load angular via CDN -->
 		<!--<script src="//code.angularjs.org/1.5.0-rc.2/angular.min.js"></script>-->
-		<script src="https://code.angularjs.org/1.3.0-rc.2/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 		<script src="app.js"></script>
 	</head>
 	<body>
@@ -25,36 +25,13 @@
 				</div>
 			</nav>
 		</header>
-		<!--
-			<div class="container">
-			
-			    <div ng-view></div>
-			
-			</div>
-			
-			
-			-->
+		
 		<div class="container">
 			<div ng-controller="resultsController">
 				<form class="form-inline">
-					<select class="form-control" ng-model="pokemon">
-					    <option disabled selected>Choose Pokemon</option>
-						<optgroup label="12 Candies">
-						    <option ng-repeat="option in candy12">{{ option }}</option>
-						</optgroup>
-						<optgroup label="25 Candies">
-							<option ng-repeat="option in candy25">{{ option }}</option>
-						</optgroup>
-						<optgroup label="50 Candies">
-							<option ng-repeat="option in candy50">{{ option }}</option>
-						</optgroup>
-						<optgroup label="100 Candies">
-						    <option ng-repeat="option in candy100">{{ option }}</option>
-						</optgroup>
-						<optgroup label="400 Candies">
-						    <option>Magikarp</option>
-                        </optgroup>
-					</select>
+                    <select class="form-control" ng-model="pokemon" ng-options="pokemon.name group by pokemon.candy + ' Candy' for pokemon in allPokemon">
+                        <option value="" disabled selected>Choose Pokemon</option>
+                    </select>
 					<div class="form-group">
 						<label class="sr-only" for="pokemonCount"># of Pokemon</label>
 						<input type="text" class="form-control" id="pokemonCount" placeholder="# of Pokemon" ng-model="pokemonCount"/>
@@ -74,7 +51,7 @@
 						Pokemon: {{item.pokemon}} |
 						# of Pokemon: {{ item.pokemonCount }} |
 						# of Candies: {{ item.candyCount }} 
-						<button class="btn btn-primary" ng-click="deleteItem($index)">-</button>
+						<button class="btn btn-primary" ng-click="pokemonList.splice($index, 1)">-</button>
 						<hr />
 					</div>
 					<button class="btn btn-primary" ng-if="pokemonList.length>0" ng-click="calculate()">Calculate!</button>    
