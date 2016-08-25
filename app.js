@@ -20,7 +20,6 @@ pokemonApp.controller('resultsController', ['$scope', function($scope) {
     ];
     
     
-    
     $scope.results = function(){
         //reset errors
         $scope.pokemonError = false;
@@ -50,6 +49,10 @@ pokemonApp.controller('resultsController', ['$scope', function($scope) {
                 candyCount: parseInt($scope.candyCount)
 
             })
+            
+            
+            //Remove Pokemon from dropdown list to prevent duplicates
+            $scope.allPokemon.splice($scope.allPokemon.indexOf($scope.pokemon),1);
 
             //Reset Inputs
             $scope.pokemon = "Choose Pokemon";
