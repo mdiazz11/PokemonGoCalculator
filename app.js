@@ -25,6 +25,7 @@ pokemonApp.controller('resultsController', ['$scope', function($scope) {
         $scope.pokemonError = false;
         $scope.pokemonCountError = false;
         $scope.candyCountError = false;
+        $scope.editMode = false;
         
         
         //Error Mesages for incorrect inputs
@@ -58,16 +59,15 @@ pokemonApp.controller('resultsController', ['$scope', function($scope) {
             $scope.pokemon = "Choose Pokemon";
             $scope.pokemonCount = "";
             $scope.candyCount = "";
+            $scope.editMode = false;
         }
         
     }
           
             
      $scope.calculate = function() {
-        //Reset
          $scope.calculateList = [];
-         $scope.transferCount = 0;
-         $scope.evolutionCount = 0;
+         
          
          var evolutionFunc = function(){            
             $scope.evolutionCount = Math.floor($scope.pokemonList[i].candyCount / $scope.pokemonList[i].candy);
@@ -86,6 +86,12 @@ pokemonApp.controller('resultsController', ['$scope', function($scope) {
                 
         for(var i = 0; i < $scope.pokemonList.length; i++)
         {
+            //Reset
+            $scope.transferCount = 0;
+            $scope.evolutionCount = 0;
+            //when calculate is clicked, the input field will disappear
+            $scope.pokemonList[i].editMode = false;
+            
             evolutionFunc();
             
             $scope.calculateList.push({
@@ -95,6 +101,7 @@ pokemonApp.controller('resultsController', ['$scope', function($scope) {
                 transferCount: $scope.transferCount
                 
             })
+            
             
         }
             

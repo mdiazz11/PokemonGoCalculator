@@ -1,68 +1,107 @@
 <!DOCTYPE html>
 <html lang="en-us" ng-app="pokemonApp">
-	<head>
-		<title>Pokemon Go Calc</title>
-		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-		<meta charset="UTF-8">
-		<!-- load bootstrap and fontawesome via CDN -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-		<!-- load angular via CDN -->
-		<!--<script src="//code.angularjs.org/1.5.0-rc.2/angular.min.js"></script>-->
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-		<script src="app.js"></script>
-	</head>
-	<body>
-		<header>
-			<nav class="navbar navbar-default">
-				<div class="container">
-					<div class="navbar-header">
-						<a class="navbar-brand" href="/">Pokemon Go Calc</a>
-					</div>
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#"><i class="fa fa-home"></i> Home</a></li>
-					</ul>
-				</div>
-			</nav>
-		</header>
-		
-		<div class="container">
-			<div ng-controller="resultsController">
-				<form class="form-inline">
-                    <select class="form-control" ng-model="pokemon" ng-options="pokemon.name group by pokemon.candy + ' Candy' for pokemon in allPokemon">
-                        <option value="" disabled selected>Choose Pokemon</option>
-                    </select>
-					<div class="form-group">
-						<label class="sr-only" for="pokemonCount"># of Pokemon</label>
-						<input type="number" class="form-control" id="pokemonCount" placeholder="# of Pokemon" ng-model="pokemonCount"/>
-					</div>
-					<div class="form-group">
-						<label class="sr-only" for="candyCount"># of Candies</label>
-						<input type="number" class="form-control" ng-model="candyCount" id="candyCount" placeholder="# of Candies" />
-					</div>
-					<button type="submit" class="btn btn-default" ng-click="results()">+</button>
-				</form>
-				
-				<p class="bg-danger" ng-if="pokemonError===true">Please select a pokmon!</p>
-				<p class="bg-danger" ng-if="pokemonCountError===true">Invalid # of Pokemon</p>
-				<p class="bg-danger" ng-if="candyCountError===true">Invalid # of Candies</p>
-				<div class="row">
-					<div class="col-md-12" ng-repeat="item in pokemonList">
-						Pokemon: {{item.pokemon}} |
-						# of Pokemon: {{ item.pokemonCount }} |
-						# of Candies: {{ item.candyCount }} 
-						<button class="btn btn-primary" ng-click="pokemonList.splice($index, 1)">-</button>
-						<hr />
-					</div>
-					<button class="btn btn-primary" ng-if="pokemonList.length>0" ng-click="calculate()">Calculate!</button>    
-				</div>
-				<div class="col-md-12" ng-repeat="item in calculateList">
-					Pokemon: {{item.pokemon}} | Transfer: {{item.transferCount}} |
-					# of Evolutions: {{ item.evolutionCount }} 
-					<hr />
-				</div>
-			</div><!--results Controller-->
-		</div>
-		<!--container-->
-	</body>
+   <head>
+      <title>Pokemon Go Calc</title>
+      <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+      <meta charset="UTF-8">
+      <!-- load bootstrap and fontawesome via CDN -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <!-- load angular via CDN -->
+      <!--<script src="//code.angularjs.org/1.5.0-rc.2/angular.min.js"></script>-->
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+      <script src="app.js"></script>
+   </head>
+   <body>
+      <header>
+         <nav class="navbar navbar-default">
+            <div class="container">
+               <div class="navbar-header">
+                  <a class="navbar-brand" href="/">Pokemon Go Calc</a>
+               </div>
+               <ul class="nav navbar-nav navbar-right">
+                  <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+               </ul>
+            </div>
+         </nav>
+      </header>
+      <div class="container">
+         <div ng-controller="resultsController">
+            <form class="form-inline">
+               <select class="form-control" ng-model="pokemon" ng-options="pokemon.name group by pokemon.candy + ' Candy' for pokemon in allPokemon">
+                  <option value="" disabled selected>Choose Pokemon</option>
+               </select>
+               <div class="form-group">
+                  <label class="sr-only" for="pokemonCount"># of Pokemon</label>
+                  <input type="number" class="form-control" placeholder="# of Pokemon" ng-model="pokemonCount"/>
+               </div>
+               <div class="form-group">
+                  <label class="sr-only" for="candyCount"># of Candies</label>
+                  <input type="number" class="form-control" ng-model="candyCount" placeholder="# of Candies" />
+               </div>
+               <button type="submit" class="btn btn-default" ng-click="results()"><span class="glyphicon glyphicon-plus"></span></button>
+            </form>
+            <div class="alert alert-danger alert-dismissible" role="alert" ng-if="pokemonError===true">
+               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+               <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+               <span class="sr-only">Error:</span> 
+               Please Choose a Pokemon!
+            </div>
+            <div class="alert alert-danger alert-dismissible" role="alert" ng-if="pokemonCountError===true">
+               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+               <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+               <span class="sr-only">Error:</span> 
+               Invalid Number of Pokemon!
+            </div>
+            <div class="alert alert-danger alert-dismissible" role="alert" ng-if="candyCountError===true">
+               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+               <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+               <span class="sr-only">Error:</span> 
+               Invalid Number of Candies!
+            </div>
+            <table class="table table-condensed" ng-if="pokemonList.length>0">
+               <tr>
+                  <th>Pokemon</th>
+                  <th># of Pokemon</th>
+                  <th># of Candy</th>
+                  <th>Edit/Delete</th>
+               </tr>
+               <tr ng-repeat="item in pokemonList">
+                  <td>{{item.pokemon}}</td>
+                  <td>
+                     <input type="number" class="form-control" placeholder="# of Pokemon" ng-if="item.editMode" ng-model="item.pokemonCount" size="4"/> 
+                     <span ng-if="!item.editMode">{{item.pokemonCount}}</span>
+                  </td>
+                  <td>
+                     <input type="number" class="form-control" placeholder="# of Candies" ng-if="item.editMode" ng-model="item.candyCount" size="4"/> 
+                     <span ng-if="!item.editMode">{{item.candyCount}}</span>
+                  </td>
+                  <td>
+                     <button class="btn btn-primary btn-xs" ng-click="item.editMode = true" ng-hide="item.editMode"><span class="glyphicon glyphicon-edit"></span></button>
+                     <button class="btn btn-danger btn-xs" ng-click="pokemonList.splice($index, 1)"><span class="glyphicon glyphicon-trash"></span></button>
+                  </td>
+               </tr>
+            </table>
+            <button class="btn btn-primary" ng-if="pokemonList.length>0" ng-click="calculate()">Calculate!</button> 
+             
+            <table class="table table-condensed" ng-if="calculateList.length>0 && pokemonList.length>0">
+                <tr>
+                    <th>Pokemon</th>
+                    <th># of Pokemon to Transfer</th>
+                    <th># of Evolutions</th>
+                </tr>
+                <tr ng-repeat="item in calculateList">
+                    <td>{{item.pokemon}}</td>
+                    <td>{{item.transferCount}}</td>
+                    <td>{{item.evolutionCount}}</td>
+                
+                </tr>
+             
+            </table> 
+            
+         </div>
+         <!--results Controller-->
+      </div>
+      <!--container-->
+   </body>
 </html>
