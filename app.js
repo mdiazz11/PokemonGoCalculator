@@ -8,15 +8,15 @@ pokemonApp.controller('resultsController', ['$scope', function($scope) {
     $scope.pokemonList = []; //list of pokemon the user has entered
     $scope.pokemon = "Choose Pokemon";    
     $scope.allPokemon = [
-        {name: 'Weedle', candy: 12},
-        {name: 'Caterpie', candy: 12},
-        {name: 'Pidgey', candy: 12},
-        {name: 'Pikachu', candy: 25},
-        {name: 'Rattata', candy: 25},
-        {name: 'Goldeen', candy: 25},
-        {name: 'Zubat', candy: 50},
-        {name: 'Ivysaur', candy: 100},
-        {name: 'Magikarp', candy: 400}
+        {name: 'Weedle', candy: 12, active: true},
+        {name: 'Caterpie', candy: 12, active: true},
+        {name: 'Pidgey', candy: 12, active: true},
+        {name: 'Pikachu', candy: 25, active: true},
+        {name: 'Rattata', candy: 25, active: true},
+        {name: 'Goldeen', candy: 25, active: true},
+        {name: 'Zubat', candy: 50, active: true},
+        {name: 'Ivysaur', candy: 100, active: true},
+        {name: 'Magikarp', candy: 400, active: true}
     ];
     
     
@@ -53,7 +53,16 @@ pokemonApp.controller('resultsController', ['$scope', function($scope) {
             
             
             //Remove Pokemon from dropdown list to prevent duplicates
-            $scope.allPokemon.splice($scope.allPokemon.indexOf($scope.pokemon),1);
+            
+            for (var i = 0; i < $scope.allPokemon.length; i++){
+                if ($scope.allPokemon[i].name === $scope.pokemon.name){
+                    $scope.allPokemon[i].active = false;
+                    break;
+                }
+            }
+            
+            
+            //$scope.allPokemon.splice($scope.allPokemon.indexOf($scope.pokemon),1);
 
             //Reset Inputs
             $scope.pokemon = "Choose Pokemon";
@@ -62,7 +71,17 @@ pokemonApp.controller('resultsController', ['$scope', function($scope) {
             $scope.editMode = false;
         }
     }
-          
+       
+    
+    $scope.deleteItem = function(index) {
+        for (var i = 0; i < $scope.allPokemon.length; i++){
+            if ($scope.allPokemon[i].name === $scope.pokemonList[index].pokemon){
+                $scope.allPokemon[i].active = true;
+                break;
+            }
+        }
+        $scope.pokemonList.splice(index, 1);
+    }
             
      $scope.calculate = function() {
          $scope.calculateList = [];
