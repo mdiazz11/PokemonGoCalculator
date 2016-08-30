@@ -61,7 +61,6 @@ pokemonApp.controller('resultsController', ['$scope', function($scope) {
             $scope.candyCount = "";
             $scope.editMode = false;
         }
-        
     }
           
             
