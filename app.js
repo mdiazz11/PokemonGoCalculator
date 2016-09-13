@@ -36,8 +36,9 @@ pokemonApp.controller('resultsController', ['$scope',
             $scope.allPokemon = allPokemon;
         })
 
+        $scope.sortByCandy = true;
 
-        console.log(JSON.stringify($scope.allPokemon));
+
 
 
         $scope.results = function () {
